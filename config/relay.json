@@ -1,0 +1,21 @@
+{
+  "listen": "127.0.0.1:8080",
+  "admin_listen": "127.0.0.1:9090",
+  "max_concurrent": 128,
+  "request_timeout_ms": 10000,
+  "health_interval_ms": 1000,
+  "health_timeout_ms": 500,
+  "health_failures": 2,
+  "health_successes": 1,
+  "routes": [
+    {
+      "name": "demo",
+      "prefix": "/",
+      "backends": [
+        {"name": "alpha", "url": "http://127.0.0.1:8081", "health_path": "/healthz"},
+        {"name": "bravo", "url": "http://127.0.0.1:8082", "health_path": "/healthz"},
+        {"name": "charlie", "url": "http://127.0.0.1:8083", "health_path": "/healthz"}
+      ]
+    }
+  ]
+}

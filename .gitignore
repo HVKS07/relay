@@ -1,0 +1,6 @@
+.tools/
+.cache/
+bin/
+coverage.out
+*.log
+results/

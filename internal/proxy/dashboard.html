@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay · Traffic overview</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1016;--panel:#121821;--line:#26303d;--muted:#8f9cad;--text:#e8edf5;--green:#91e7b5;--blue:#8bb9ff;--orange:#ffc78b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button,a{touch-action:manipulation}a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offset:5px}header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5vw}.brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:750;letter-spacing:-1px}.logo{display:grid;place-items:center;width:33px;height:33px;border-radius:9px;background:var(--green);color:#101a16;font-size:24px}.brand small{font-size:11px;letter-spacing:1px;font-weight:500;color:var(--muted);border-left:1px solid var(--line);padding-left:16px;margin-left:10px}.header-right{display:flex;gap:22px;align-items:center;color:var(--muted);font-size:12px}.dot{width:7px;height:7px;background:currentColor;border-radius:50%;display:inline-block;margin-right:7px}.live{color:var(--green)}main{max-width:1400px;margin:auto;padding:42px 5vw 24px}.eyebrow{color:var(--green);text-transform:uppercase;letter-spacing:2px;font-size:10px;font-weight:700}.title-row{display:flex;justify-content:space-between;align-items:center;gap:20px;margin:8px 0 28px}h1{font-size:34px;letter-spacing:-1.2px;margin:0 0 6px;font-weight:600}p{margin:0;color:var(--muted)}.controls{display:flex;align-items:center;gap:12px}button,.link-button{font:inherit;background:#19222e;color:var(--text);border:1px solid #334151;padding:9px 14px;border-radius:7px;cursor:pointer}.link-button{background:transparent;font-size:12px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:11px}.card{padding:21px}.label{color:var(--muted);font-size:12px;display:flex;justify-content:space-between;align-items:center}.card strong{display:block;font-size:34px;letter-spacing:-1px;font-weight:550;margin:12px 0 6px;font-variant-numeric:tabular-nums}.card small{color:var(--muted);font-size:11px}.accent{color:var(--green)}.grid{display:grid;grid-template-columns:1.7fr 1fr;gap:18px;margin-top:22px}.panel{padding:23px}.panel-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:20px}.panel-heading h2{font-size:14px;font-weight:600;margin:0}.panel-heading span,.caption{color:var(--muted);font-size:11px}.chart-wrap{position:relative;height:205px}.chart-wrap svg{width:100%;height:100%;overflow:visible}.chart-note{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:12px;pointer-events:none}.chart-footer{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-top:12px}.legend{display:flex;gap:16px}.legend span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px}.status-row{display:grid;grid-template-columns:75px 1fr 45px;gap:12px;align-items:center;margin:17px 0;font-size:12px}.track{height:6px;background:#25303c;border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:var(--green);border-radius:20px;transition:width .4s}.status-row b{text-align:right;font-weight:500;font-variant-numeric:tabular-nums}.status-row[data-class="4"] .fill{background:var(--orange)}.status-row[data-class="5"] .fill{background:#ff8c9b}.status-row[data-class="3"] .fill{background:var(--blue)}.backend-panel{margin-top:22px;padding-bottom:8px}.badge{display:inline-flex;align-items:center;font-size:10px;letter-spacing:.2px;padding:4px 9px;border-radius:20px;color:var(--green);background:#192d27;white-space:nowrap}.badge.bad{color:var(--orange);background:#352b23}.table-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;text-align:left;white-space:nowrap}th{color:var(--muted);font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:0 12px 14px;border-bottom:1px solid var(--line)}td{padding:17px 12px;border-bottom:1px solid #222b36;font-size:12px}tbody tr:last-child td{border-bottom:0}td:first-child{font-weight:650}code{font:11px ui-monospace,SFMono-Regular,Consolas,monospace;color:#a6b3c4}.backend-name{display:flex;align-items:center;gap:10px}.server-icon{color:var(--muted);border:1px solid #354253;border-radius:5px;padding:3px 7px;font-size:12px}.capacity{display:flex;align-items:center;gap:10px}.capacity .track{width:65px}.notice{padding:12px 16px;margin-bottom:18px;border:1px solid #685037;background:#30271e;color:var(--orange);border-radius:8px;font-size:12px}.notice[hidden]{display:none}footer{display:flex;justify-content:space-between;gap:18px;color:var(--muted);font-size:10px;margin-top:22px;padding-bottom:20px}.bottom{display:flex;align-items:center;gap:6px}.muted{color:var(--muted)}@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.brand small{display:none}.title-row{align-items:flex-start}h1{font-size:28px}}@media(max-width:560px){header{padding:0 20px}.header-right a{display:none}main{padding:28px 20px}.title-row{flex-direction:column}.cards{gap:10px}.card{padding:16px}.card strong{font-size:27px}.panel{padding:18px}footer{flex-direction:column}.controls{width:100%;justify-content:space-between}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/"><span class="logo" aria-hidden="true">⇄</span>relay<span><small>PROXY CONTROL ROOM</small></span></a><div class="header-right"><a href="/metrics/raw">Prometheus feed ↗</a><span id="connection" class="live" role="status"><i class="dot"></i>Connecting</span></div></header>
+<main>
+<div class="eyebrow">Observability / Overview</div>
+<div class="title-row"><div><h1>Traffic, at a glance.</h1><p>A live view of your proxy and the services behind it.</p></div><div class="controls"><span class="caption">Refreshes every 2s</span><button id="pause" type="button" aria-pressed="false">Pause updates</button></div></div>
+<div id="notice" class="notice" role="status" hidden></div>
+<section class="cards" aria-label="Key metrics">
+<article class="card"><div class="label">Total requests <span>↗</span></div><strong id="total">—</strong><small>Since proxy startup</small></article>
+<article class="card"><div class="label">HTTP success rate <span>✓</span></div><strong id="success" class="accent">—</strong><small>Responses with 2xx or 3xx status</small></article>
+<article class="card"><div class="label">Average latency <span>◷</span></div><strong id="latency">—</strong><small>Full request duration · since startup</small></article>
+<article class="card"><div class="label">Healthy backends <span>◇</span></div><strong id="healthy">—</strong><small id="health-caption">Waiting for health state</small></article>
+</section>
+<div class="grid">
+<section class="panel"><div class="panel-heading"><h2>Request traffic</h2><span><b id="rate">—</b> req / sec</span></div><div class="chart-wrap"><svg id="chart" viewBox="0 0 660 200" preserveAspectRatio="none" role="img" aria-label="Request throughput during this browser session"><defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#91e7b5" stop-opacity=".2"/><stop offset="100%" stop-color="#91e7b5" stop-opacity="0"/></linearGradient></defs><g stroke="#26303d" stroke-dasharray="3 5"><path d="M0 20H660 M0 75H660 M0 130H660 M0 185H660"/></g><path id="area" fill="url(#fade)"/><path id="line" fill="none" stroke="#91e7b5" stroke-width="2" vector-effect="non-scaling-stroke"/><text id="scale" x="0" y="12" fill="#8f9cad" font-size="10"></text></svg><div id="chart-note" class="chart-note">Collecting live samples…</div></div><div class="chart-footer"><div class="legend"><span>Completed requests / second</span></div><span>Last 60 samples · this session</span></div></section>
+<section class="panel"><div class="panel-heading"><h2>Response breakdown</h2><span>Since startup</span></div><div id="statuses">
+<div class="status-row" data-class="2"><span>2xx Success</span><div class="track"><div class="fill"></div></div><b>0</b></div>
+<div class="status-row" data-class="3"><span>3xx Redirect</span><div class="track"><div class="fill"></div></div><b>0</b></div>
+<div class="status-row" data-class="4"><span>4xx Client</span><div class="track"><div class="fill"></div></div><b>0</b></div>
+<div class="status-row" data-class="5"><span>5xx Server</span><div class="track"><div class="fill"></div></div><b>0</b></div>
+</div><p class="caption"><span id="failures">—</span> proxy failures or interruptions, including aborted streams.</p></section>
+</div>
+<section class="panel backend-panel"><div class="panel-heading"><h2>Upstream services <span id="backend-count"></span></h2><div class="capacity"><span id="inflight">— in flight</span><div class="track"><div id="capacity-bar" class="fill"></div></div></div></div><div class="table-scroll"><table><thead><tr><th>Backend</th><th>Origin</th><th>Route</th><th>Health</th><th>Traffic eligibility</th></tr></thead><tbody id="backends"><tr><td colspan="5" class="muted">Waiting for upstream health checks…</td></tr></tbody></table></div></section>
+<footer><div class="bottom"><i class="dot"></i><span id="updated">Waiting for first update</span></div><span>Counters reset when Relay restarts. Admin requests are excluded.</span></footer>
+<noscript><p class="notice">Enable JavaScript for live metrics, or open the <a href="/metrics/raw">raw metrics feed</a>.</p></noscript>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), format=new Intl.NumberFormat();
+let paused=false,previous=null,history=[],timer=null,fetching=false;
+function connection(text,ok){const el=$('connection');el.textContent=text;el.style.color=ok?'var(--green)':'var(--orange)';}
+function chart(){const max=Math.max(1,...history);const points=history.map((v,i)=>[i*660/Math.max(1,history.length-1),185-v/max*160]);const d=points.map((p,i)=>(i?'L':'M')+p.join(',')).join(' ');$('line').setAttribute('d',d);$('area').setAttribute('d',points.length?d+' L660,185 L0,185 Z':'');$('scale').textContent=max.toFixed(1)+' req/s';$('chart-note').textContent=history.length<2?'Collecting live samples…':history.every(v=>v===0)?'No traffic yet. Send a request through Relay.':'';}
+function cell(row,text,tag){const td=document.createElement('td');const el=tag?document.createElement(tag):td;el.textContent=text;if(tag)td.append(el);row.append(td);return el;}
+function render(data){
+ const now=performance.now(),healthy=data.backends.filter(b=>b.healthy).length;
+ $('total').textContent=format.format(data.requests);
+ $('success').textContent=data.requests?((data.statuses[2]+data.statuses[3])/data.requests*100).toFixed(1)+'%':'—';
+ $('latency').textContent=data.requests?(data.duration_sum_seconds/data.requests*1000).toFixed(1)+' ms':'—';
+ $('healthy').textContent=healthy+' / '+data.backends.length;
+ $('healthy').style.color=healthy===data.backends.length?'var(--green)':'var(--orange)';
+ $('health-caption').textContent=healthy===data.backends.length?'All backends eligible for traffic':(data.backends.length-healthy)+' unavailable or awaiting probes';
+ $('failures').textContent=format.format(data.failures);
+ $('backend-count').textContent=' / '+data.backends.length;
+ $('inflight').textContent=data.in_flight+' / '+data.capacity+' in flight';
+ $('capacity-bar').style.width=Math.min(100,data.in_flight/data.capacity*100)+'%';
+ document.querySelectorAll('.status-row').forEach(row=>{const n=data.statuses[Number(row.dataset.class)];row.querySelector('b').textContent=format.format(n);row.querySelector('.fill').style.width=(data.requests?n/data.requests*100:0)+'%';});
+ if(previous&&data.requests>=previous.count){const rate=(data.requests-previous.count)/((now-previous.time)/1000);history.push(rate);if(history.length>60)history.shift();$('rate').textContent=rate.toFixed(1);}else{history=[];$('rate').textContent='—';}
+ previous={count:data.requests,time:now};chart();
+ const fragment=document.createDocumentFragment();
+ data.backends.forEach(b=>{const row=document.createElement('tr');cell(row,b.name);cell(row,b.url,'code');cell(row,b.route+' · '+b.prefix,'code');const badge=cell(row,b.healthy?'● Healthy':'● Unavailable','span');badge.className='badge'+(b.healthy?'':' bad');cell(row,b.healthy?'Accepting requests':'Excluded from rotation');fragment.append(row);});
+ $('backends').replaceChildren(fragment);
+ $('updated').textContent='Updated '+new Date().toLocaleTimeString();
+ const unavailableRoutes=new Set(data.backends.map(b=>b.route));data.backends.filter(b=>b.healthy).forEach(b=>unavailableRoutes.delete(b.route));
+ $('notice').hidden=unavailableRoutes.size===0;
+ $('notice').textContent='No healthy backends for '+Array.from(unavailableRoutes).join(', ')+'. Requests to these routes return 503.';
+}
+async function refresh(){
+ if(paused||fetching)return;
+ fetching=true;
+ try{const response=await fetch('/api/stats',{cache:'no-store',signal:AbortSignal.timeout(4000)});if(!response.ok)throw Error('HTTP '+response.status);const data=await response.json();if(paused)return;render(data);connection('● Live',true);}
+ catch(error){if(paused)return;connection('● Disconnected',false);$('notice').hidden=false;$('notice').textContent='Cannot reach Relay. Showing the last received values; check that the proxy is running.';previous=null;history=[];$('rate').textContent='—';chart();}
+ finally{fetching=false;if(!paused)timer=setTimeout(refresh,2000);}
+}
+$('pause').addEventListener('click',()=>{paused=!paused;$('pause').textContent=paused?'Resume updates':'Pause updates';$('pause').setAttribute('aria-pressed',String(paused));clearTimeout(timer);if(paused)connection('● Paused',false);else{previous=null;history=[];refresh();}});
+refresh();
+</script>
+</body>
+</html>
