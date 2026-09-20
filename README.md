@@ -4,6 +4,16 @@ A reverse proxy engineering project focused on predictable behavior under load a
 
 **Status:** Working Go implementation with integration tests and a local failure demo. Performance benchmarks and a hosted portfolio presentation are still pending.
 
+## Public demo deployment
+
+Docker Compose starts Caddy, Relay, and three private backends with a sanitized dashboard and bounded **Send demo request** button:
+
+```sh
+docker compose up --build --wait
+```
+
+Open http://localhost:8088. See [deployment instructions](docs/deployment.md) for HTTPS hosting, isolation, limits, smoke checks, and rollback. No cloud deployment has been performed yet.
+
 ## Run locally
 
 Requires Go 1.23 or newer. On Windows, the demo script also detects the project-local toolchain at `.tools/go`.
@@ -41,9 +51,9 @@ For an automated executable smoke check, run `.\scripts\smoke.ps1`. It verifies 
 With Go on PATH, the cross-platform manual equivalent is to run these commands in four terminals:
 
 ```sh
-go run ./cmd/backend -name alpha -listen 127.0.0.1:8081
-go run ./cmd/backend -name bravo -listen 127.0.0.1:8082
-go run ./cmd/backend -name charlie -listen 127.0.0.1:8083
+go run ./cmd/backend -name alpha -demo-controls -listen 127.0.0.1:8081
+go run ./cmd/backend -name bravo -demo-controls -listen 127.0.0.1:8082
+go run ./cmd/backend -name charlie -demo-controls -listen 127.0.0.1:8083
 go run ./cmd/relay -config config/relay.json
 ```
 

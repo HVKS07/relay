@@ -25,6 +25,7 @@ type RouteConfig struct {
 type Config struct {
 	Listen           string        `json:"listen"`
 	AdminListen      string        `json:"admin_listen"`
+	PublicListen     string        `json:"public_listen,omitempty"`
 	MaxConcurrent    int           `json:"max_concurrent"`
 	RequestTimeoutMS int           `json:"request_timeout_ms"`
 	HealthIntervalMS int           `json:"health_interval_ms"`
@@ -53,6 +54,14 @@ func LoadConfig(path string) (Config, error) {
 }
 
 func (c Config) Validate() error {
+	if c.PublicListen != "" {
+		if _, _, err := net.SplitHostPort(c.PublicListen); err != nil {
+			return fmt.Errorf("invalid public_listen: %w", err)
+		}
+		if c.PublicListen == c.Listen || c.PublicListen == c.AdminListen {
+			return fmt.Errorf("public listener must differ from data and admin listeners")
+		}
+	}
 	for _, addr := range []string{c.Listen, c.AdminListen} {
 		if _, _, err := net.SplitHostPort(addr); err != nil {
 			return fmt.Errorf("invalid listen address %q: %w", addr, err)

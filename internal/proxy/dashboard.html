@@ -12,6 +12,7 @@
 <main>
 <div class="eyebrow">Observability / Overview</div>
 <div class="title-row"><div><h1>Traffic, at a glance.</h1><p>A live view of your proxy and the services behind it.</p></div><div class="controls"><span class="caption">Refreshes every 2s</span><button id="pause" type="button" aria-pressed="false">Pause updates</button></div></div>
+<div class="controls" style="margin-bottom:18px;flex-wrap:wrap"><!--PUBLIC_DEMO--></div>
 <div id="notice" class="notice" role="status" hidden></div>
 <section class="cards" aria-label="Key metrics">
 <article class="card"><div class="label">Total requests <span>↗</span></div><strong id="total">—</strong><small>Since proxy startup</small></article>
@@ -71,6 +72,12 @@ async function refresh(){
 }
 $('pause').addEventListener('click',()=>{paused=!paused;$('pause').textContent=paused?'Resume updates':'Pause updates';$('pause').setAttribute('aria-pressed',String(paused));clearTimeout(timer);if(paused)connection('● Paused',false);else{previous=null;history=[];refresh();}});
 refresh();
+if($('send-demo'))$('send-demo').addEventListener('click',async()=>{
+ const button=$('send-demo');button.disabled=true;$('demo-result').textContent='Sending…';
+ try{const res=await fetch('/demo/request',{method:'POST',signal:AbortSignal.timeout(12000)});if(!res.ok)throw Error(res.status===429?'Demo is busy. Try again shortly.':'Request failed (HTTP '+res.status+').');const data=await res.json();$('demo-result').textContent='Handled by '+data.backend+' · request '+data.request_id.slice(0,8);}
+ catch(error){$('demo-result').textContent=error.message;}
+ finally{button.disabled=false;}
+});
 </script>
 </body>
 </html>

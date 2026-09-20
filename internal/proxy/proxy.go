@@ -86,7 +86,12 @@ func New(c Config, logger *slog.Logger) (*Proxy, error) {
 				ErrorHandler: func(w http.ResponseWriter, req *http.Request, err error) {
 					o, _ := req.Context().Value(outcomeKey{}).(*outcome)
 					status := http.StatusBadGateway
-					if req.Context().Err() != nil {
+					deadline, hasDeadline := req.Context().Deadline()
+					if hasDeadline && !time.Now().Before(deadline) {
+						// Socket deadlines can fire before the context timer is scheduled.
+						status = http.StatusGatewayTimeout
+						o.value = "timeout"
+					} else if req.Context().Err() != nil {
 						if errors.Is(req.Context().Err(), context.DeadlineExceeded) {
 							status = http.StatusGatewayTimeout
 							o.value = "timeout"

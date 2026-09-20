@@ -13,7 +13,15 @@ import (
 func main() {
 	listen := flag.String("listen", "127.0.0.1:8081", "loopback listen address")
 	name := flag.String("name", "alpha", "backend identity")
+	controls := flag.Bool("demo-controls", false, "enable failure controls for local demos only")
 	flag.Parse()
+	handler := newHandler(*name, *controls)
+	log.Printf("demo backend %s on %s", *name, *listen)
+	server := &http.Server{Addr: *listen, Handler: handler, ReadHeaderTimeout: 3 * time.Second, WriteTimeout: 35 * time.Second, IdleTimeout: 30 * time.Second}
+	log.Fatal(server.ListenAndServe())
+}
+
+func newHandler(name string, controls bool) http.Handler {
 	var unhealthy atomic.Bool
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
@@ -24,10 +32,18 @@ func main() {
 		w.Write([]byte("ok\n"))
 	})
 	mux.HandleFunc("POST /demo/fail", func(w http.ResponseWriter, r *http.Request) {
+		if !controls {
+			http.NotFound(w, r)
+			return
+		}
 		unhealthy.Store(true)
 		w.Write([]byte("backend unhealthy\n"))
 	})
 	mux.HandleFunc("POST /demo/recover", func(w http.ResponseWriter, r *http.Request) {
+		if !controls {
+			http.NotFound(w, r)
+			return
+		}
 		unhealthy.Store(false)
 		w.Write([]byte("backend healthy\n"))
 	})
@@ -51,10 +67,8 @@ func main() {
 			}
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("X-Backend", *name)
-		json.NewEncoder(w).Encode(map[string]string{"backend": *name, "method": r.Method, "path": r.URL.Path, "request_id": r.Header.Get("X-Request-ID")})
+		w.Header().Set("X-Backend", name)
+		json.NewEncoder(w).Encode(map[string]string{"backend": name, "method": r.Method, "path": r.URL.Path, "request_id": r.Header.Get("X-Request-ID")})
 	})
-	log.Printf("demo backend %s on %s", *name, *listen)
-	server := &http.Server{Addr: *listen, Handler: mux, ReadHeaderTimeout: 3 * time.Second, WriteTimeout: 35 * time.Second, IdleTimeout: 30 * time.Second}
-	log.Fatal(server.ListenAndServe())
+	return mux
 }
