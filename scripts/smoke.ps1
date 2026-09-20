@@ -13,7 +13,7 @@ $children = @()
 try {
     $names = @('alpha', 'bravo', 'charlie')
     for ($i = 0; $i -lt 3; $i++) {
-        $children += Start-Process -FilePath "$PWD\bin\backend.exe" -ArgumentList @('-name', $names[$i], '-listen', "127.0.0.1:$(8081 + $i)") -WindowStyle Hidden -PassThru
+        $children += Start-Process -FilePath "$PWD\bin\backend.exe" -ArgumentList @('-name', $names[$i], '-demo-controls', '-listen', "127.0.0.1:$(8081 + $i)") -WindowStyle Hidden -PassThru
     }
     $children += Start-Process -FilePath "$PWD\bin\relay.exe" -ArgumentList @('-config', 'config/relay.json') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$PWD\bin\smoke.log" -RedirectStandardError "$PWD\bin\smoke-error.log"
     $ready = $false

@@ -14,7 +14,7 @@ try {
     $names = @('alpha', 'bravo', 'charlie')
     for ($i = 0; $i -lt 3; $i++) {
         $port = 8081 + $i
-        $children += Start-Process -FilePath (Join-Path (Get-Location) 'bin\backend.exe') -ArgumentList @('-name', $names[$i], '-listen', "127.0.0.1:$port") -WindowStyle Hidden -PassThru
+        $children += Start-Process -FilePath (Join-Path (Get-Location) 'bin\backend.exe') -ArgumentList @('-name', $names[$i], '-demo-controls', '-listen', "127.0.0.1:$port") -WindowStyle Hidden -PassThru
     }
     Write-Host 'Relay: http://127.0.0.1:8080 | Metrics: http://127.0.0.1:9090/metrics'
     Write-Host 'Use another terminal for requests. Ctrl+C stops Relay and its demo backends.'

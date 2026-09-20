@@ -1,0 +1,74 @@
+name: relay
+
+x-runtime: &runtime
+  image: relay:local
+  build: .
+  restart: unless-stopped
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  pids_limit: 100
+  mem_limit: 128m
+  cpus: 0.5
+  logging:
+    driver: json-file
+    options: {max-size: "10m", max-file: "3"}
+
+services:
+  relay:
+    <<: *runtime
+    mem_limit: 256m
+    cpus: 1.0
+    stop_grace_period: 15s
+    networks: [edge, backends]
+    depends_on: [alpha, bravo, charlie]
+    healthcheck:
+      test: [CMD, /relay, -config, /config/relay.json, -healthcheck]
+      interval: 5s
+      timeout: 3s
+      retries: 6
+      start_period: 5s
+  alpha:
+    <<: *runtime
+    entrypoint: [/backend]
+    command: [-name, alpha, -listen, "0.0.0.0:8081"]
+    networks: [backends]
+  bravo:
+    <<: *runtime
+    entrypoint: [/backend]
+    command: [-name, bravo, -listen, "0.0.0.0:8081"]
+    networks: [backends]
+  charlie:
+    <<: *runtime
+    entrypoint: [/backend]
+    command: [-name, charlie, -listen, "0.0.0.0:8081"]
+    networks: [backends]
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-http://localhost}
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${HTTP_PORT:-8088}:80"
+      - "${BIND_ADDRESS:-127.0.0.1}:${HTTPS_PORT:-8443}:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [edge]
+    depends_on:
+      relay: {condition: service_healthy}
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 100
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+
+networks:
+  edge:
+  backends:
+    internal: true
+volumes:
+  caddy_data:
+  caddy_config:

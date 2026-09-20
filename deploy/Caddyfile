@@ -1,0 +1,16 @@
+{
+	admin off
+}
+
+{$SITE_ADDRESS:http://localhost} {
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy no-referrer
+		-Server
+	}
+	request_body {
+		max_size 1KB
+	}
+	# Only the dedicated public handler is reachable from the edge network.
+	reverse_proxy relay:8088
+}

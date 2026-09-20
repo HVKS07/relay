@@ -29,6 +29,10 @@ func (p *Proxy) writeDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func (p *Proxy) writeStats(w http.ResponseWriter, r *http.Request) {
+	p.stats(w, r, false)
+}
+
+func (p *Proxy) stats(w http.ResponseWriter, r *http.Request, public bool) {
 	type backendView struct {
 		Name    string `json:"name"`
 		Route   string `json:"route"`
@@ -42,7 +46,11 @@ func (p *Proxy) writeStats(w http.ResponseWriter, r *http.Request) {
 	backends := make([]backendView, 0)
 	for _, route := range p.routes {
 		for _, b := range route.backends {
-			backends = append(backends, backendView{b.config.Name, route.config.Name, route.config.Prefix, b.config.URL, b.healthy.Load()})
+			origin := b.config.URL
+			if public {
+				origin = "Private upstream"
+			}
+			backends = append(backends, backendView{b.config.Name, route.config.Name, route.config.Prefix, origin, b.healthy.Load()})
 		}
 	}
 	w.Header().Set("Content-Type", "application/json")
